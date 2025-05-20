@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Box Score</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="index.html">Back to games</a>
+  <h1 id="title"></h1>
+  <pre id="box"></pre>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const file = params.get('file');
+    if (file) {
+      fetch(`../data/box_scores/${file}`)
+        .then(resp => resp.json())
+        .then(data => {
+          document.getElementById('title').textContent = file.replace('.json', '');
+          document.getElementById('box').textContent = JSON.stringify(data, null, 2);
+        });
+    }
+  </script>
+</body>
+</html>

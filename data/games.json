@@ -1,0 +1,16 @@
+[
+  {
+    "date": "2023-10-25",
+    "opponent": "Boston Celtics",
+    "location": "home",
+    "box_score_url": "https://www.basketball-reference.com/boxscores/202310250NYK.html",
+    "file": "202310250NYK.json"
+  },
+  {
+    "date": "2023-10-27",
+    "opponent": "Atlanta Hawks",
+    "location": "away",
+    "box_score_url": "https://www.basketball-reference.com/boxscores/202310270ATL.html",
+    "file": "202310270ATL.json"
+  }
+]
