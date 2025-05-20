@@ -25,6 +25,7 @@ def fetch_schedule():
                 table = BeautifulSoup(c, 'html.parser').find('table', id='games')
                 break
     rows = table.select('tbody tr') if table else []
+
     games = []
     for row in rows:
         if 'thead' in row.get('class', []):
@@ -37,6 +38,7 @@ def fetch_schedule():
         opp = row.find('td', {'data-stat': 'opp_name'}).get_text(strip=True)
         loc_flag = row.find('td', {'data-stat': 'game_location'}).get_text(strip=True)
         home_away = 'away' if loc_flag == '@' else 'home'
+
         if box_score_link:
             href = box_score_link['href']
             game_id = href.split('/')[-1].replace('.html', '')
