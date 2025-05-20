@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Knicks Games</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Knicks Games</h1>
+  <ul id="game-list"></ul>
+  <script>
+    fetch('../data/games.json')
+      .then(resp => resp.json())
+      .then(games => {
+        const list = document.getElementById('game-list');
+        games.forEach(game => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `game.html?file=${game.file}`;
+          a.textContent = `${game.date} vs ${game.opponent} (${game.location})`;
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>
