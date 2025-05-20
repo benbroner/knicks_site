@@ -15,7 +15,17 @@ def fetch_schedule():
     resp = requests.get(SCHEDULE_URL)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
-    rows = soup.select('table#games tbody tr')
+    table = soup.find('table', id='games')
+    if table is None:
+        # table is often wrapped in HTML comments
+        from bs4 import Comment
+        comments = soup.find_all(string=lambda t: isinstance(t, Comment))
+        for c in comments:
+            if 'id="games"' in c:
+                table = BeautifulSoup(c, 'html.parser').find('table', id='games')
+                break
+    rows = table.select('tbody tr') if table else []
+
     games = []
     for row in rows:
         if 'thead' in row.get('class', []):
@@ -25,8 +35,10 @@ def fetch_schedule():
             continue
         date = date_cell.text.strip()
         box_score_link = row.find('a', text='Box Score')
-        opp = row.find('td', {'data-stat': 'opp_name'}).text.strip()
-        home_away = "@" if row.find('td', {'data-stat': 'game_location'}).text.strip() == "@" else "home"
+        opp = row.find('td', {'data-stat': 'opp_name'}).get_text(strip=True)
+        loc_flag = row.find('td', {'data-stat': 'game_location'}).get_text(strip=True)
+        home_away = 'away' if loc_flag == '@' else 'home'
+
         if box_score_link:
             href = box_score_link['href']
             game_id = href.split('/')[-1].replace('.html', '')
